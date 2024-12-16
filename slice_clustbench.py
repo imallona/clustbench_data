@@ -30,9 +30,10 @@ def main():
 
     counts = f'https://github.com/gagolews/clustering-data-v1/raw/refs/heads/master/{generator}/{name}.data.gz'
     labels = f'https://github.com/gagolews/clustering-data-v1/raw/refs/heads/master/{generator}/{name}.labels0.gz'
-    
-    wget.download(counts, os.path.join(args.output_dir, f"{generator}_{name}.data.gz"))
-    wget.download(labels, os.path.join(args.output_dir, f"{generator}_{name}.labels0.gz"))
+
+    module_name = args.name
+    wget.download(counts, os.path.join(args.output_dir, f"{module_name}.data.gz"))
+    wget.download(labels, os.path.join(args.output_dir, f"{module_name}.labels0.gz"))
 
 
 if __name__ == "__main__":
