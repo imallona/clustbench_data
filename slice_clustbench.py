@@ -42,20 +42,17 @@ def download_file(url: str, dest_path: str, chunk_size: int = 8192) -> None:
 def main():
     parser = argparse.ArgumentParser(description='clustbench dataset slicer')
 
-    parser.add_argument('--output_dir', type=str,
-                        help='output directory to store data files.', default=os.getcwd())
-    parser.add_argument('--name', type=str, help='name of this module', default='clustbench')
+    parser.add_argument('--output', action='append', default=[],
+                        help='id=PATH, one per output the stage declares (api 0.8.0).')
     parser.add_argument('--dataset_generator', type=str, help='dataset generator name, e.g. graves, mnist etc',
                         required = True)
     parser.add_argument('--dataset_name', type=str,
                         help='dataset name, e.g. for `mnist` either `fashion` or `digits`',
                         required = True)
 
-    try:
-        args = parser.parse_args()
-    except:
-        parser.print_help()
-        sys.exit(0)
+    # ob still passes --output_dir and --name until api 0.10; they are ignored.
+    args, _ = parser.parse_known_args()
+    outputs = dict(o.split('=', 1) for o in args.output)
 
     # we download data from gagowleski repo. From a pinned commit rather than the master branch,
     # but this is the general schema:
@@ -63,14 +60,13 @@ def main():
 
     generator = args.dataset_generator
     name = args.dataset_name
-    module_name = args.name
 
     counts = f'{BASE_URL}/{generator}/{name}.data.gz'
     labels = f'{BASE_URL}/{generator}/{name}.labels0.gz'
 
 
-    download_file(counts, os.path.join(args.output_dir, f"{module_name}.data.gz"))
-    download_file(labels, os.path.join(args.output_dir, f"{module_name}.labels0.gz"))
+    download_file(counts, outputs['data_matrix'])
+    download_file(labels, outputs['data_true_labels'])
 
 
 if __name__ == "__main__":
