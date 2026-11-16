@@ -46,7 +46,7 @@ def main():
                         help='id=PATH, one per output the stage declares (api 0.8.0).')
     parser.add_argument('--dataset_generator', type=str, help='dataset generator name, e.g. graves, mnist etc',
                         required = True)
-    parser.add_argument('--dataset_name', type=str,
+    parser.add_argument('--dataset', type=str,
                         help='dataset name, e.g. for `mnist` either `fashion` or `digits`',
                         required = True)
 
@@ -59,7 +59,7 @@ def main():
     # https://github.com/gagolews/clustering-data-v1/raw/refs/heads/master/mnist/digits.data.gz
 
     generator = args.dataset_generator
-    name = args.dataset_name
+    name = args.dataset
 
     counts = f'{BASE_URL}/{generator}/{name}.data.gz'
     labels = f'{BASE_URL}/{generator}/{name}.labels0.gz'
